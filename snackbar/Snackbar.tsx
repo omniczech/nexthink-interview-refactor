@@ -49,32 +49,27 @@ const SnackBar = ({
   variant = "default",
   classNames,
 }: SnackBarProps) => {
+  const isSuperLarge = variant === "super_large";
   const [IsVisible, setIsVisible] = useState(true);
-  const [idx, setIdx] = useState(0);
+  const [idx, setIdx] = useState(0); // I'm leaving this here because it seems to indicate a rotating function where this component cycles through the announcements.
 
-  const [HasAnnouncements, setHasAnnouncements] = useState(
-    announcements.length > 0,
-  );
+  const HasAnnouncements = announcements.length > 0; // The component will re-render if this prop changes, so unless there's a feature added to change them from either this component or the children, this can just be a const.
 
-  if (!IsVisible) {
+  if (!IsVisible || (!HasAnnouncements && !message)) {
+    // second check here is to prevent the SnackBar from showing up if there's no message AND no announcements.
     return null;
   }
 
-  const activeAnnouncement: Announcement | undefined =
-    announcements.length > 0 ? announcements[idx] : undefined;
-
+  const activeAnnouncement: Announcement | undefined = HasAnnouncements
+    ? announcements[idx] // this implies some sort of rotating announcements, which is not implemented. If there's no plan to do so, I would just change this line to announcements[0] and remove the idx state.
+    : undefined;
   const getMessageText = () => {
-    if (activeAnnouncement?.message) {
-      return activeAnnouncement.message;
-    }
-    return message;
+    return activeAnnouncement?.message || message; // I prefer the oneliner here, this could be a code style preference.
   };
 
   const CloseSnackBar = () => {
     setIsVisible(false);
   };
-
-  const isSuperLarge = variant === "super_large";
 
   return (
     <SnackBarWrapper variant={variant} classNames={classNames} id={id}>

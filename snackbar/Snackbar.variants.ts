@@ -24,10 +24,10 @@ export const variants: {
     classNames: {
       root: "bg-gray-100 text-black",
       container: "p-6 border border-gray-300",
+      content: " flex flex-col gap-4",
       overline: "uppercase tracking-wide text-xs",
       message: "text-lg font-semibold",
       close: "text-sm underline",
-      content: "",
     },
   },
   {
